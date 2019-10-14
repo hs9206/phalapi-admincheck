@@ -87,7 +87,7 @@ class Group extends Api
             $rs['info'] = $r;
         } else {
             $rs['code'] = 1;
-            $rs['msg'] = T('data get failed');
+            $rs['msg'] = \PhalApi\T('data get failed');
         }
 
         return $rs;
@@ -104,11 +104,11 @@ class Group extends Api
         $rs = array('code' => 0, 'msg' => '');
         $r = self::$Domain->addGroup($this);
         if ($r == 0) {
-            $rs['msg'] = T('success');
+            $rs['msg'] = \PhalApi\T('success');
         } elseif ($r == 1) {
-            $rs['msg'] = T('failed');
+            $rs['msg'] = \PhalApi\T('failed');
         } elseif ($r == 2) {
-            $rs['msg'] = T('group name repeat');
+            $rs['msg'] = \PhalApi\T('group name repeat');
         }
         $rs['code'] = $r;
 
@@ -126,11 +126,11 @@ class Group extends Api
         $rs = array('code' => 0, 'msg' => '');
         $r = self::$Domain->editGroup($this);
         if ($r == 0) {
-            $rs['msg'] = T('success');
+            $rs['msg'] = \PhalApi\T('success');
         } elseif ($r == 1) {
-            $rs['msg'] = T('failed');
+            $rs['msg'] = \PhalApi\T('failed');
         } elseif ($r == 2) {
-            $rs['msg'] = T('group name repeat');
+            $rs['msg'] = \PhalApi\T('group name repeat');
         }
         $rs['code'] = $r;
 
@@ -148,9 +148,9 @@ class Group extends Api
         $rs = array('code' => 0, 'msg' => '');
         $r = self::$Domain->delGroup($this->ids);
         if ($r == 0) {
-            $rs['msg'] = T('success');
+            $rs['msg'] = \PhalApi\T('success');
         } else {
-            $rs['msg'] = T('failed');
+            $rs['msg'] = \PhalApi\T('failed');
         }
         $rs['code'] = $r;
 
@@ -166,9 +166,9 @@ class Group extends Api
         $rs = array('code' => 0, 'msg' => '');
         $r = self::$Domain->setRules($this->id, $this->rules);
         if ($r == 0) {
-            $rs['msg'] = T('success');
+            $rs['msg'] = \PhalApi\T('success');
         } else {
-            $rs['msg'] = T('failed');
+            $rs['msg'] = \PhalApi\T('failed');
         }
         $rs['code'] = $r;
 
@@ -184,9 +184,9 @@ class Group extends Api
         $rs = array('code' => 0, 'msg' => '');
         $r = self::$Domain->assUser($this);
         if ($r == 0) {
-            $rs['msg'] = T('success');
+            $rs['msg'] = \PhalApi\T('success');
         } else {
-            $rs['msg'] = T('failed');
+            $rs['msg'] = \PhalApi\T('failed');
         }
         $rs['code'] = $r;
 

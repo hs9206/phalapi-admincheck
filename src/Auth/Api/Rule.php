@@ -81,7 +81,7 @@ class Rule extends Api
             $rs['info'] = $r;
         } else {
             $rs['code'] = 1;
-            $rs['msg'] = T('data get failed');
+            $rs['msg'] = \PhalApi\T('data get failed');
         }
         return $rs;
 
@@ -97,11 +97,11 @@ class Rule extends Api
         $rs = array('code' => 0, 'msg' => '');
         $r = self::$Domain->addRule($this);
         if ($r == 0) {
-            $rs['msg'] = T('success');
+            $rs['msg'] = \PhalApi\T('success');
         } else if ($r == 1) {
-            $rs['msg'] = T('failed');
+            $rs['msg'] = \PhalApi\T('failed');
         } else if ($r == 2) {
-            $rs['msg'] = T('rule name repeat');
+            $rs['msg'] = \PhalApi\T('rule name repeat');
         }
         $rs['code'] = $r;
         return $rs;
@@ -118,11 +118,11 @@ class Rule extends Api
         $rs = array('code' => 0, 'msg' => '');
         $r = self::$Domain->editRule($this);
         if ($r == 0) {
-            $rs['msg'] = T('success');
+            $rs['msg'] = \PhalApi\T('success');
         } else if ($r == 1) {
-            $rs['msg'] = T('failed');
+            $rs['msg'] = \PhalApi\T('failed');
         } else if ($r == 2) {
-            $rs['msg'] = T('rule name repeat');
+            $rs['msg'] = \PhalApi\T('rule name repeat');
         }
         $rs['code'] = $r;
         return $rs;
@@ -139,9 +139,9 @@ class Rule extends Api
         $rs = array('code' => 0, 'msg' => '');
         $r = self::$Domain->delRule($this->ids);
         if ($r == 0) {
-            $rs['msg'] = T('success');
+            $rs['msg'] = \PhalApi\T('success');
         } else {
-            $rs['msg'] = T('failed');
+            $rs['msg'] = \PhalApi\T('failed');
         }
         $rs['code'] = $r;
         return $rs;
