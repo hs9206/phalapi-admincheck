@@ -1,6 +1,6 @@
 {
     "name": "symochan/phalapi-admincheck",
-    "description": "基于phalapi2的auth扩展",
+    "description": "基于phalapi2的auth扩展, 根据业务有所改动",
     "type": "library",
     "license": "GPL-3.0-or-later",
     "authors": [
