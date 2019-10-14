@@ -6,9 +6,11 @@
 
 基于Phalapi2的Auth扩展,从phalapi1移植
 
+并根据自己的业务，进行了多库操作修改
+
 附上:
 
-项目GitHub地址:[https://github.com/twodayw/auth.git](https://github.com/twodayw/auth.git "项目Git地址")
+
 
 
 ## 安装PhalApi2-Auth

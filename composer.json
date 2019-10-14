@@ -1,12 +1,12 @@
 {
-    "name": "phalapi/auth",
+    "name": "symochan/auth",
     "description": "基于phalapi2的auth扩展",
     "type": "library",
     "license": "GPL-3.0-or-later",
     "authors": [
         {
-            "name": "twoday",
-            "email": "33392316@qq.com"
+            "name": "symo chan",
+            "email": "symo@tudiai.net"
         }
     ],
     "require": {
