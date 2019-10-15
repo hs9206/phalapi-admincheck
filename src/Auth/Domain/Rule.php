@@ -1,9 +1,11 @@
 <?php
+
 namespace Phalapi\Auth\Auth\Domain;
 
 use Phalapi\Auth\Auth\Model\Rule as Model_Auth_Rule;
+
 /**
- * 规则领域类
+ * 规则领域类.
  *
  * @author hms
  */
@@ -11,7 +13,7 @@ class Rule
 {
     private static $Model = null;
 
-    public function  __construct()
+    public function __construct()
     {
         if (self::$Model == null) {
             self::$Model = new Model_Auth_Rule();
@@ -28,8 +30,12 @@ class Rule
     {
         $rs = array('items' => array(), 'count' => 0);
         $param = get_object_vars($apiObj);
+        if (isset($param['app_key'])) {
+            unset($param['app_key']);
+        }
         $rs['count'] = self::$Model->getCount($param['keyWord']);
         $rs['items'] = self::$Model->getList($param);
+
         return $rs;
     }
 
@@ -40,14 +46,18 @@ class Rule
     public function addRule($apiObj)
     {
         $param = get_object_vars($apiObj);
+        if (isset($param['app_key'])) {
+            unset($param['app_key']);
+        }
         //检查规则标识是否重复，重复返回2
         $r = self::$Model->checkRepeat($param['name']);
-        if ($r)
+        if ($r) {
             return 2;
+        }
         //成功返回0，失败返回2
         $r = self::$Model->addRule($param);
-        return $r == true ? 0 : 1;
 
+        return $r == true ? 0 : 1;
     }
 
     /**修改规则
@@ -57,42 +67,52 @@ class Rule
     public function editRule($apiObj)
     {
         $param = get_object_vars($apiObj);
+        if (isset($param['app_key'])) {
+            unset($param['app_key']);
+        }
         //检查名称重复，重复返回2
         $r = self::$Model->checkRepeat($param['name'], $param['id']);
-        if ($r)
+        if ($r) {
             return 2;
-        $r=self::$Model->editRule($param['id'], $param);
+        }
+        $r = self::$Model->editRule($param['id'], $param);
+
         return $r == true ? 0 : 1;
     }
 
     /** 删除规则
      * @param $ids id列表 如1,2,3
+     *
      * @return int
      */
     public function delRule($ids)
     {
         $arrIds = explode(',', $ids);
-        $r=self::$Model->delRule($arrIds);
+        $r = self::$Model->delRule($arrIds);
+
         return $r == true ? 0 : 1;
     }
 
-
     /** 获取单个规则信息
      * @param $id
+     *
      * @return mixed
      */
     public function getInfo($id)
     {
         $r = self::$Model->getInfo($id);
+
         return $r;
     }
 
-    public function getRulesInGroups($gids) {
-        if(\Phalapi\DI()->cache===null){
-            $rules=self::$Model->getRulesInGroups( $gids);
-        }else{
-            $rules=self::$Model->getRulesInGroupsCache($gids);
+    public function getRulesInGroups($gids)
+    {
+        if (\Phalapi\DI()->cache === null) {
+            $rules = self::$Model->getRulesInGroups($gids);
+        } else {
+            $rules = self::$Model->getRulesInGroupsCache($gids);
         }
+
         return $rules;
     }
 }

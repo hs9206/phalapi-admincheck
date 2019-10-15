@@ -1,9 +1,11 @@
 <?php
+
 namespace Phalapi\Auth\Auth\Domain;
 
 use Phalapi\Auth\Auth\Model\Group as Model_Auth_Group;
+
 /**
- * 组领域类
+ * 组领域类.
  *
  * @author hms
  */
@@ -11,7 +13,7 @@ class Group
 {
     private static $Model = null;
 
-    public function  __construct()
+    public function __construct()
     {
         if (self::$Model == null) {
             self::$Model = new Model_Auth_Group();
@@ -28,8 +30,13 @@ class Group
     {
         $rs = array('items' => array(), 'count' => 0);
         $param = get_object_vars($apiObj);
+        if (isset($param['app_key'])) {
+            unset($param['app_key']);
+        }
+
         $rs['count'] = self::$Model->getGroupCount($param['keyWord']);
         $rs['items'] = self::$Model->getGroupList($param);
+
         return $rs;
     }
 
@@ -40,14 +47,18 @@ class Group
     public function addGroup($apiObj)
     {
         $param = get_object_vars($apiObj);
+        if (isset($param['app_key'])) {
+            unset($param['app_key']);
+        }
         //检查名称重复，重复返回2
         $r = self::$Model->checkRepeat($param['title']);
-        if ($r)
+        if ($r) {
             return 2;
+        }
         //成功返回0，失败返回2
         $r = self::$Model->addGroup($param);
-        return $r == true ? 0 : 1;
 
+        return $r == true ? 0 : 1;
     }
 
     /**修改组
@@ -57,49 +68,60 @@ class Group
     public function editGroup($apiObj)
     {
         $param = get_object_vars($apiObj);
+        if (isset($param['app_key'])) {
+            unset($param['app_key']);
+        }
         //检查名称重复，重复返回2
         $r = self::$Model->checkRepeat($param['title'], $param['id']);
-        if ($r)
+        if ($r) {
             return 2;
+        }
         //处理参数
         $info['title'] = $param['title'];
         if ($param['status'] !== null) {
             $info['status'] = $param['status'];
         }
         $r = self::$Model->editGroup($param['id'], $info);
+
         return $r == true ? 0 : 1;
     }
 
     /** 删除组
      * @param $ids id列表 如1,2,3
+     *
      * @return int
      */
     public function delGroup($ids)
     {
         $arrIds = explode(',', $ids);
         $r = self::$Model->delGroup($arrIds);
+
         return $r == true ? 0 : 1;
     }
 
     /** 设置规则
      * @param $id
      * @param $rules
+     *
      * @return int
      */
     public function setRules($id, $rules)
     {
         $info['rules'] = $rules;
         $r = self::$Model->setRules($id, $info);
+
         return $r == true ? 0 : 1;
     }
 
     /** 获取单个组信息
      * @param $id
+     *
      * @return mixed
      */
     public function getGroupOne($id)
     {
         $r = self::$Model->getGroupOne($id);
+
         return $r;
     }
 
@@ -112,6 +134,9 @@ class Group
     public function assUser($apiObj)
     {
         $param = get_object_vars($apiObj);
+        if (isset($param['app_key'])) {
+            unset($param['app_key']);
+        }
         $accessModel = new \Phalapi\Auth\Auth\Model\Access();
 
         //先删除当前用户的所有关联组
@@ -130,17 +155,18 @@ class Group
 
         //执行批量添加
         $r = $accessModel->assUser($arr);
+
         return $r == true ? 0 : 1;
     }
-    
+
     public function getUserInGroups($uid)
     {
-        if(\Phalapi\DI()->cache===null){
-            $r=self::$Model->getUserInGroups($uid);
-        }else{
-            $r=self::$Model->getUserInGroupsCache($uid);
+        if (\Phalapi\DI()->cache === null) {
+            $r = self::$Model->getUserInGroups($uid);
+        } else {
+            $r = self::$Model->getUserInGroupsCache($uid);
         }
+
         return $r;
     }
-
 }
