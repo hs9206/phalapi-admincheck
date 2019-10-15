@@ -7,8 +7,9 @@ use Phalapi\Auth\Auth\Domain\Group as Domain_Auth_Group;
 
 /**
  * Class Api_Auth_Group 组接口服务类.
+ * title:用户组中文名称， rules：用户组拥有的规则id， 多个规则","隔开，status 状态：为1正常，为0禁用.
  *
- * @author: hms 2015-6-8
+ * @author: symo chan
  */
 class Group extends Api
 {
@@ -60,34 +61,40 @@ class Group extends Api
     /**
      * 获取组列表.
      *
-     * @return int    code 业务代码
+     * @desc <font color="red">[已完成] </font>获取角色权限组列表，status 状态：为1正常，为0禁用
+     *
+     * @return int    err_code 业务代码
      * @return object info 组信息对象
      * @return object info.items 组数据行
      * @return int    info.count 数据总数，用于分页
-     * @return string msg 业务消息
+     * @return string err_msg 业务消息
      */
     public function getList()
     {
-        $rs = array('code' => 0, 'info' => array(), 'msg' => '');
+        $rs = array('err_code' => 0, 'info' => array(), 'err_msg' => '');
         $rs['info'] = self::$Domain->getGroupList($this);
 
         return $rs;
     }
 
-    /**获取单个组信息
-     * @return int code 业务代码：0.获取成功，1.获取失败
+    /**
+     * 获取单个组信息.
+     *
+     * @desc <font color="red">[已完成] </font>获取单一角色组详情，relus值为权限规则对应的IDS
+     *
+     * @return int    err_code 业务代码：0.获取成功，1.获取失败
      * @return object info 组信息对象,获取失败为空
-     * @return string msg 业务消息
+     * @return string err_msg 业务消息
      */
     public function getInfo()
     {
-        $rs = array('code' => 0, 'info' => array(), 'msg' => '');
+        $rs = array('err_code' => 0, 'info' => array(), 'err_msg' => '');
         $r = self::$Domain->getGroupOne($this->id);
         if (is_array($r)) {
             $rs['info'] = $r;
         } else {
-            $rs['code'] = 1;
-            $rs['msg'] = \PhalApi\T('data get failed');
+            $rs['err_code'] = 1;
+            $rs['err_msg'] = \PhalApi\T('data get failed');
         }
 
         return $rs;
@@ -96,21 +103,23 @@ class Group extends Api
     /**
      * 创建组.
      *
-     * @return int    code 业务代码：0.操作成功，1.操作失败，2.组名重复
-     * @return string msg 业务消息
+     * @desc <font color="red">[已完成] </font>创建角色组
+     *
+     * @return int    err_code 业务代码：0.操作成功，1.操作失败，2.组名重复
+     * @return string err_msg 业务消息
      */
     public function add()
     {
-        $rs = array('code' => 0, 'msg' => '');
+        $rs = array('err_code' => 0, 'err_msg' => '');
         $r = self::$Domain->addGroup($this);
         if ($r == 0) {
-            $rs['msg'] = \PhalApi\T('success');
+            $rs['err_msg'] = \PhalApi\T('success');
         } elseif ($r == 1) {
-            $rs['msg'] = \PhalApi\T('failed');
+            $rs['err_msg'] = \PhalApi\T('failed');
         } elseif ($r == 2) {
-            $rs['msg'] = \PhalApi\T('group name repeat');
+            $rs['err_msg'] = \PhalApi\T('group name repeat');
         }
-        $rs['code'] = $r;
+        $rs['err_code'] = $r;
 
         return $rs;
     }
@@ -118,21 +127,23 @@ class Group extends Api
     /**
      * 修改组.
      *
-     * @return int    code 业务代码：0.操作成功，1.操作失败，2.组名重复
-     * @return string msg 业务消息
+     * @desc <font color="red">[已完成] </font>修改角色组信息
+     *
+     * @return int    err_code 业务代码：0.操作成功，1.操作失败，2.组名重复
+     * @return string err_msg 业务消息
      */
     public function edit()
     {
-        $rs = array('code' => 0, 'msg' => '');
+        $rs = array('err_code' => 0, 'err_msg' => '');
         $r = self::$Domain->editGroup($this);
         if ($r == 0) {
-            $rs['msg'] = \PhalApi\T('success');
+            $rs['err_msg'] = \PhalApi\T('success');
         } elseif ($r == 1) {
-            $rs['msg'] = \PhalApi\T('failed');
+            $rs['err_msg'] = \PhalApi\T('failed');
         } elseif ($r == 2) {
-            $rs['msg'] = \PhalApi\T('group name repeat');
+            $rs['err_msg'] = \PhalApi\T('group name repeat');
         }
-        $rs['code'] = $r;
+        $rs['err_code'] = $r;
 
         return $rs;
     }
@@ -140,55 +151,65 @@ class Group extends Api
     /**
      * 删除组.
      *
-     * @return int    code 业务代码：0.操作成功，1.操作失败
+     * @desc <font color="red">[已完成] </font>删除角色组，（硬删除）.软删除可通过 edit接口设置status为0
+     *
+     * @return int    err_code 业务代码：0.操作成功，1.操作失败
      * @return string msg 业务消息
      */
     public function del()
     {
-        $rs = array('code' => 0, 'msg' => '');
+        $rs = array('err_code' => 0, 'msg' => '');
         $r = self::$Domain->delGroup($this->ids);
         if ($r == 0) {
             $rs['msg'] = \PhalApi\T('success');
         } else {
             $rs['msg'] = \PhalApi\T('failed');
         }
-        $rs['code'] = $r;
+        $rs['err_code'] = $r;
 
         return $rs;
     }
 
-    /**设置规则
-     * @return int code 业务代码：0.操作成功，1.操作失败
+    /**
+     * 设置规则.
+     *
+     * @desc <font color="red">[已完成] </font>设置规则关联，rules里的规则ID，多条用『，』分隔。
+     *
+     * @return int    err_code 业务代码：0.操作成功，1.操作失败
      * @return string 业务消息
      */
     public function setRules()
     {
-        $rs = array('code' => 0, 'msg' => '');
+        $rs = array('err_code' => 0, 'msg' => '');
         $r = self::$Domain->setRules($this->id, $this->rules);
         if ($r == 0) {
             $rs['msg'] = \PhalApi\T('success');
         } else {
             $rs['msg'] = \PhalApi\T('failed');
         }
-        $rs['code'] = $r;
+        $rs['err_code'] = $r;
 
         return $rs;
     }
 
-    /**组关联用户
-     * @return int code 业务代码：0.操作成功，1.操作失败
+    /**
+     * 组关联用户.
+     *
+     * @desc <font color="red">[已完成] </font>角色组关联用户ID，多条用『，』分隔。
+     *
+     * @return int    err_code 业务代码：0.操作成功，1.操作失败
      * @return string 业务消息
      */
     public function assUser()
     {
-        $rs = array('code' => 0, 'msg' => '');
+        $rs = array('err_code' => 0, 'msg' => '');
         $r = self::$Domain->assUser($this);
         if ($r == 0) {
             $rs['msg'] = \PhalApi\T('success');
         } else {
             $rs['msg'] = \PhalApi\T('failed');
         }
-        $rs['code'] = $r;
+        $rs['err_code'] = $r;
 
         return $rs;
     }
